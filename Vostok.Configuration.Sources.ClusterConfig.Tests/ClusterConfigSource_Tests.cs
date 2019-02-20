@@ -8,7 +8,7 @@ using NUnit.Framework;
 using Vostok.ClusterConfig.Client.Abstractions;
 using Vostok.Commons.Testing.Observable;
 using Vostok.Configuration.Abstractions.SettingsTree;
-using Vostok.Configuration.Sources.ClusterConfig.SettingsNodeConverters;
+using Vostok.Configuration.Sources.ClusterConfig.Converters;
 
 namespace Vostok.Configuration.Sources.ClusterConfig.Tests
 {

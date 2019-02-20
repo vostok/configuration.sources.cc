@@ -4,8 +4,9 @@ using JetBrains.Annotations;
 using Vostok.ClusterConfig.Client;
 using Vostok.ClusterConfig.Client.Abstractions;
 using Vostok.Configuration.Abstractions;
+using Vostok.Configuration.Abstractions.Attributes;
 using Vostok.Configuration.Abstractions.SettingsTree;
-using Vostok.Configuration.Sources.ClusterConfig.SettingsNodeConverters;
+using Vostok.Configuration.Sources.ClusterConfig.Converters;
 using Vostok.Configuration.Sources.Extensions.Observable;
 
 namespace Vostok.Configuration.Sources.ClusterConfig
@@ -23,14 +24,14 @@ namespace Vostok.Configuration.Sources.ClusterConfig
         private readonly ISettingsNodeConverter[] converters;
         private readonly string prefix;
 
-        public ClusterConfigSource(string prefix = null, bool splitMultiLevelKeys = true, Func<string, ISettingsNode> parseSettings = null)
+        public ClusterConfigSource(ClusterConfigSourceSettings settings)
             :this(
                 ClusterConfigClient.Default,
-                prefix,
+                settings.Prefix,
                 new ISettingsNodeConverter[]
                 {
-                    splitMultiLevelKeys ? new MultiLevelKeysSplitter(Separators) : null,
-                    parseSettings != null ? new ValueParser(parseSettings) : null
+                    settings.SplitMultiLevelKeys ? new MultiLevelKeysSplitter(Separators) : null,
+                    settings.ParseSettings != null ? new ValueParser(settings.ParseSettings) : null
                 }.Where(converter => converter != null).ToArray())
         {
         }

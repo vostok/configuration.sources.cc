@@ -3,7 +3,7 @@ using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
 using Vostok.Configuration.Abstractions.SettingsTree;
-using Vostok.Configuration.Sources.ClusterConfig.SettingsNodeConverters;
+using Vostok.Configuration.Sources.ClusterConfig.Converters;
 using Vostok.Configuration.Sources.ClusterConfig.Tests.Helpers;
 
 namespace Vostok.Configuration.Sources.ClusterConfig.Tests.Converters

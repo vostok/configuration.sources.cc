@@ -3,7 +3,7 @@ using System.Linq;
 using Vostok.Configuration.Abstractions.SettingsTree;
 using Vostok.Configuration.Sources.SettingsTree;
 
-namespace Vostok.Configuration.Sources.ClusterConfig.SettingsNodeConverters
+namespace Vostok.Configuration.Sources.ClusterConfig.Converters
 {
     internal class MultiLevelKeysSplitter : ISettingsNodeConverter
     {
@@ -14,6 +14,7 @@ namespace Vostok.Configuration.Sources.ClusterConfig.SettingsNodeConverters
             this.separators = separators;
         }
 
+        // TODO(krait): Optimize!
         public ISettingsNode Convert(ISettingsNode node)
         {
             var keys = node.Name == null

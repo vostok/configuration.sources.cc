@@ -22,9 +22,14 @@
   <ItemGroup>
     <Compile Include="..\..\vostok.commons.testing\Vostok.Commons.Testing\Observable\ObservableHelpers.cs" Link="Commons\ObservableHelpers.cs" />
     <Compile Include="..\..\vostok.commons.testing\Vostok.Commons.Testing\Observable\TestObserver.cs" Link="Commons\TestObserver.cs" />
-    </ItemGroup>
+  </ItemGroup>
   <ItemGroup>
-    <Reference Include="Vostok.ClusterConfig.Client.Abstractions, Version=0.0.1.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="Vostok.ClusterConfig.Client.Abstractions">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\vostok.clusterconfig.client.abstractions\Vostok.ClusterConfig.Client.Abstractions\bin\Release\netstandard2.0\Vostok.ClusterConfig.Client.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Vostok.ClusterConfig.Client.Abstractions">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\vostok.clusterconfig.client.abstractions\Vostok.ClusterConfig.Client.Abstractions\bin\Release\netstandard2.0\Vostok.ClusterConfig.Client.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Vostok.Configuration.Abstractions, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null">
