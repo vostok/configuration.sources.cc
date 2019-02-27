@@ -1,9 +1,11 @@
+using JetBrains.Annotations;
 using Vostok.Configuration.Abstractions.SettingsTree;
 
 namespace Vostok.Configuration.Sources.ClusterConfig.Converters
 {
     internal interface ISettingsNodeConverter
     {
-        ISettingsNode Convert(ISettingsNode settings);
+        [CanBeNull]
+        ISettingsNode Convert([CanBeNull] ISettingsNode settings);
     }
 }
