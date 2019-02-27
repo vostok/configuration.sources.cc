@@ -7,6 +7,8 @@ notests *default:
 
   install:
     - Vostok.Configuration.Sources.ClusterConfig/bin/Release/netstandard2.0/Vostok.Configuration.Sources.ClusterConfig.dll
+    - module vostok.configuration.abstractions
+    - module vostok.clusterconfig.client.abstractions
 
   deps:
     - vostok.devtools
