@@ -29,7 +29,7 @@ namespace Vostok.Configuration.Sources.ClusterConfig
                 new ISettingsNodeConverter[]
                 {
                     settings.SplitMultiLevelKeys ? new MultiLevelKeysSplitter(Separators) : null,
-                    settings.ParseSettings != null ? new ValueParser(settings.ParseSettings) : null
+                    settings.ValuesParser != null ? new ValueParser(settings.ValuesParser) : null
                 }.Where(converter => converter != null).ToArray())
         {
         }
