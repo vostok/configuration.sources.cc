@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Reactive.Linq;
 using FluentAssertions;
@@ -16,7 +15,6 @@ namespace Vostok.Configuration.Sources.ClusterConfig.Tests
     internal class ClusterConfigSource_Tests
     {
         private const string Prefix = "prefix";
-        private Func<string, ISettingsNode> parseSettings;
         private IClusterConfigClient client;
         private ClusterConfigSource source;
         private ISettingsNodeConverter[] converters;
@@ -63,6 +61,18 @@ namespace Vostok.Configuration.Sources.ClusterConfig.Tests
             var value = source.Observe().WaitFirstValue(100.Milliseconds());
             value.settings.Should().BeSameAs(nodes[2]);
             value.error.Should().BeNull();
+        }
+
+        [Test]
+        public void Should_have_efficient_scopeto_method()
+        {
+            source = source.ScopeTo("suffix");
+
+            source.Prefix.Should().Be("prefix/suffix");
+
+            source = source.ScopeTo("foo", "bar");
+
+            source.Prefix.Should().Be("prefix/suffix/foo/bar");
         }
     }
 }

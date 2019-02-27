@@ -20,7 +20,6 @@ namespace Vostok.Configuration.Sources.ClusterConfig
         private readonly Func<string, ISettingsNode> valueParser;
         private readonly IClusterConfigClient client;
         private readonly ISettingsNodeConverter[] converters;
-        private readonly string prefix;
 
         public ClusterConfigSource([NotNull] ClusterConfigSourceSettings settings)
             : this(
@@ -36,19 +35,28 @@ namespace Vostok.Configuration.Sources.ClusterConfig
         }
 
         internal ClusterConfigSource(
-            [NotNull] IClusterConfigClient client, 
-            [NotNull] string prefix, 
+            [NotNull] IClusterConfigClient client,
+            [NotNull] string prefix,
             [NotNull] params ISettingsNodeConverter[] converters)
         {
             this.client = client;
-            this.prefix = prefix;
             this.converters = converters;
+
+            Prefix = prefix;
         }
+
+        public string Prefix { get; }
+
+        public ClusterConfigSource ScopeTo(params string[] scope)
+            => ScopeTo(string.Join("/", scope));
+
+        public ClusterConfigSource ScopeTo(string innerPrefix)
+            => new ClusterConfigSource(client, $"{Prefix.TrimEnd('/')}/{innerPrefix.TrimStart('/')}", converters);
 
         /// <inheritdoc />
         public IObservable<(ISettingsNode settings, Exception error)> Observe() =>
             client
-                .Observe(prefix)
+                .Observe(Prefix)
                 .Select(settings => converters.Aggregate(settings, (s, converter) => converter.Convert(s)))
                 .Select(settings => (settings, null as Exception));
     }
