@@ -35,11 +35,13 @@ namespace Vostok.Configuration.Sources.ClusterConfig
         /// If set to <c>true</c>, <see cref="ClusterConfigSource"/> will split <see cref="ValueNode"/>s with keys containing dots (such as <c>a.b.c</c>) into a hierarchy of <see cref="ObjectNode"/>s.
         /// </summary>
         public bool SplitMultiLevelKeys { get; set; } = true;
-        
+
         /// <summary>
-        /// If provided with a non-null value, <see cref="ClusterConfigSource"/> will use this delegate to parse values of all <see cref="ValueNode"/>s in observed tree, replacing them with parsed nodes.
+        /// <para>If provided with a non-null value, <see cref="ClusterConfigSource"/> will use this delegate to parse values of all <see cref="ValueNode"/>s in observed tree, replacing them with parsed nodes.</para>
+        /// <para>First string argument is the value to be parsed (can be <c>null</c>).</para>
+        /// <para>Second string argument is resulting root node's name (can be <c>null</c>).</para>
         /// </summary>
         [CanBeNull]
-        public Func<string, ISettingsNode> ValuesParser { get; set; }
+        public Func<string, string, ISettingsNode> ValuesParser { get; set; }
     }
 }

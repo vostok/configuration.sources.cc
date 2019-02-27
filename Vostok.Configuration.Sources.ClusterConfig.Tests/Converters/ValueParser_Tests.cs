@@ -11,42 +11,63 @@ namespace Vostok.Configuration.Sources.ClusterConfig.Tests.Converters
     [TestFixture]
     internal class ValueParser_Tests : TreeConstructionSet
     {
-        private Func<string, ISettingsNode> parser;
+        private Func<string, string, ISettingsNode> parser;
         private ValueParser converter;
 
         [SetUp]
         public void SetUp()
         {
-            parser = Substitute.For<Func<string, ISettingsNode>>();
+            parser = (value, name) => Object(name, Value(null, "parsed"));
+
             converter = new ValueParser(parser);
         }
         
         [Test]
-        public void Should_parse_ObjectNode_with_single_child_when_parser_is_not_null()
+        public void Should_parse_ObjectNode_with_single_child()
         {
-            var parsedValue = Value("parsed");
+            var original = Object("name", Value("", "value"));
 
-            parser.Invoke("value").Returns(parsedValue);
-            
-            converter.Convert(Object(Value("value")))
-                .Should()
-                .Be(parsedValue);
+            var parsed = converter.Convert(original);
+
+            var expected = Object("name", Value(null, "parsed"));
+
+            parsed.Should().Be(expected);
         }
 
         [Test]
-        public void Should_throw_for_ArrayNode_when_parser_is_not_null()
+        public void Should_parse_single_ValueNode()
         {
-            new Action(() => converter.Convert(Array(Value("value"))))
-                .Should()
-                .Throw<Exception>();
+            var original = Value("x", "y");
+
+            var parsed = converter.Convert(original);
+
+            var expected = Object("x", Value(null, "parsed"));
+
+            parsed.Should().Be(expected);
         }
-        
+
         [Test]
-        public void Should_throw_for_ValueNode_when_parser_is_not_null()
+        public void Should_venture_into_arrays()
         {
-            new Action(() => converter.Convert(Value("value")))
-                .Should()
-                .Throw<Exception>();
+            var original = Array(Value("x", "y"));
+
+            var parsed = converter.Convert(original);
+
+            var expected = Array(Object("x", Value(null, "parsed")));
+
+            parsed.Should().Be(expected);
+        }
+
+        [Test]
+        public void Should_venture_into_objects()
+        {
+            var original = Object(Value("x", "y"));
+
+            var parsed = converter.Convert(original);
+
+            var expected = Object(Object("x", Value(null, "parsed")));
+
+            parsed.Should().Be(expected);
         }
     }
 }

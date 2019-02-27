@@ -6,22 +6,32 @@ namespace Vostok.Configuration.Sources.ClusterConfig.Converters
 {
     internal class ValueParser : ISettingsNodeConverter
     {
-        private readonly Func<string, ISettingsNode> parseSettings;
+        private readonly Func<string, string, ISettingsNode> parse;
 
-        public ValueParser(Func<string, ISettingsNode> parseSettings)
+        public ValueParser(Func<string, string, ISettingsNode> parse)
         {
-            this.parseSettings = parseSettings;
+            this.parse = parse;
         }
 
         public ISettingsNode Convert(ISettingsNode node)
         {
-            if (parseSettings == null)
-                return node;
+            switch (node)
+            {
+                case ValueNode valueNode:
+                    return parse(valueNode.Value, valueNode.Name);
 
-            if (!(node is ObjectNode objectNode) || node.Children.Count() != 1)
-                throw new FormatException($"Provided settings node of type '{node.GetType()}' cannot be parsed.");
+                case ArrayNode arrayNode:
+                    return new ArrayNode(arrayNode.Name, arrayNode.Children.Select(Convert).ToArray());
 
-            return parseSettings(objectNode.Children.Single().Value);
+                case ObjectNode objectNode:
+                    if (objectNode.ChildrenCount == 1 && objectNode.Children.Single() is ValueNode nestedValueNode && string.IsNullOrEmpty(nestedValueNode.Name))
+                        return parse(nestedValueNode.Value, objectNode.Name);
+
+                    return new ObjectNode(objectNode.Name, objectNode.Children.Select(Convert));
+
+                default:
+                    return node;
+            }
         }
     }
 }
