@@ -34,10 +34,10 @@ namespace Vostok.Configuration.Sources.ClusterConfig.Converters
                     return TreeFactory.CreateTreeByMultiLevelKey(nameParts[0], nameParts.Skip(1).ToArray(), valueNode.Value);
 
                 case ArrayNode arrayNode:
-                    return new ArrayNode(arrayNode.Name, arrayNode.Children.Select(ConvertInternal).ToArray());
+                    return new ArrayNode(arrayNode.Name, MergeRedundantObjectNodes(arrayNode.Children.Select(ConvertInternal)));
 
                 case ObjectNode objectNode:
-                    return new ObjectNode(objectNode.Name, objectNode.Children.Select(ConvertInternal));
+                    return new ObjectNode(objectNode.Name, MergeRedundantObjectNodes(objectNode.Children.Select(ConvertInternal)));
 
                 default:
                     return node;
@@ -62,6 +62,40 @@ namespace Vostok.Configuration.Sources.ClusterConfig.Converters
                 foreach (var child in node.Children)
                     queue.Enqueue(child);
             }
+        }
+
+        // (iloktionov): We must merge redundant ObjectNodes with same names produced by TreeFactory to prevent data loss.
+        // (iloktionov): We must also preserve original order (as much as it makes sense) to respect array elements ordering.
+        private static List<ISettingsNode> MergeRedundantObjectNodes(IEnumerable<ISettingsNode> nodes)
+        {
+            var result = new List<ISettingsNode>();
+            var builders = new Dictionary<string, ObjectNodeBuilder>(StringComparer.OrdinalIgnoreCase);
+            var positions = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var node in nodes)
+            {
+                if (node is ObjectNode objectNode && node.Name != null && objectNode.ChildrenCount == 1)
+                {
+                    if (builders.TryGetValue(node.Name, out var builder))
+                    {
+                       builder.SetChild(objectNode.Children.Single());
+                    }
+                    else
+                    {
+                        builders[node.Name] = objectNode.ToBuilder();
+                        positions[node.Name] = result.Count;
+                        result.Add(node);
+                    }
+                }
+                else result.Add(node);
+            }
+
+            foreach (var pair in positions)
+            {
+                result[pair.Value] = builders[pair.Key].Build();
+            }
+
+            return result;
         }
     }
 }

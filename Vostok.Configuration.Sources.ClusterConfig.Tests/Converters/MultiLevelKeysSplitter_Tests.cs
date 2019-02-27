@@ -65,11 +65,32 @@ namespace Vostok.Configuration.Sources.ClusterConfig.Tests.Converters
         [Test]
         public void Should_work_recursively()
         {
-            var node = Object("a.b", Array("c.d", Value("e.f", "value")));
+            var node = Object("a.b", Array("c.d", Value("e.f", "value"), Value("e.g", "value2")));
 
             splitter.Convert(node)
                 .Should()
-                .Be(Object("a.b", Array("c.d", Object("e", Value("f", "value")))));
+                .Be(Object("a.b", Array("c.d", Object("e", Value("f", "value"), Value("g", "value2")))));
+        }
+
+        [Test]
+        public void Should_preserve_ordering_for_arrays()
+        {
+            var node = Object("foo",
+                Object("bar", Value("a.b", "1"), Value("a.c", "2"), Value("b.c", "3")),
+                Array("baz", Object("obj", new ISettingsNode[] { }), Value("d.e", "4"), Value("d.f", "5"), Value("key", "6")));
+
+            var expectedResult = Object("foo",
+                Object("bar",
+                    Object("a", Value("b", "1"), Value("c", "2")),
+                    Object("b", Value("c", "3"))),
+                Array("baz", 
+                    Object("obj", new ISettingsNode[] { }), 
+                    Object("d", 
+                        Value("e", "4"), 
+                        Value("f", "5")),
+                    Value("key", "6")));
+
+            splitter.Convert(node).Should().Be(expectedResult);
         }
     }
 }
