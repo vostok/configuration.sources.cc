@@ -11,7 +11,6 @@ namespace Vostok.Configuration.Sources.ClusterConfig.Converters
     {
         private const char Separator = '.';
 
-        // TODO(krait): Optimize!
         public ISettingsNode Convert(ISettingsNode node)
         {
             if (!EnumerateAllValueNodeNames(node).Any(name => name.Contains(Separator)))
@@ -22,24 +21,24 @@ namespace Vostok.Configuration.Sources.ClusterConfig.Converters
 
         private static ISettingsNode ConvertInternal(ISettingsNode node)
         {
-            if (node == null)
-                return null;
-
-            var keys = node.Name == null
-                ? new string[] { null }
-                : node.Name.Replace(" ", "").Split(new[] { Separator }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (keys.Length == 0)
-                keys = new[] { "" };
-
             switch (node)
             {
                 case ValueNode valueNode:
-                    return TreeFactory.CreateTreeByMultiLevelKey(keys[0], keys.Skip(1).ToArray(), valueNode.Value);
+                    if (valueNode.Name == null || !valueNode.Name.Contains(Separator))
+                        return valueNode;
+
+                    var nameParts = valueNode.Name.Split(new[] {Separator}, StringSplitOptions.RemoveEmptyEntries);
+                    if (nameParts.Length == 1)
+                        return valueNode;
+
+                    return TreeFactory.CreateTreeByMultiLevelKey(nameParts[0], nameParts.Skip(1).ToArray(), valueNode.Value);
+
                 case ArrayNode arrayNode:
-                    return TreeFactory.CreateTreeByMultiLevelKey(keys[0], keys.Skip(1), new ArrayNode(keys.Last(), arrayNode.Children.Select(ConvertInternal).ToArray()));
+                    return new ArrayNode(arrayNode.Name, arrayNode.Children.Select(ConvertInternal).ToArray());
+
                 case ObjectNode objectNode:
-                    return TreeFactory.CreateTreeByMultiLevelKey(keys[0], keys.Skip(1), new ObjectNode(keys.Last(), objectNode.Children.Select(ConvertInternal)));
+                    return new ObjectNode(objectNode.Name, objectNode.Children.Select(ConvertInternal));
+
                 default:
                     return node;
             }
