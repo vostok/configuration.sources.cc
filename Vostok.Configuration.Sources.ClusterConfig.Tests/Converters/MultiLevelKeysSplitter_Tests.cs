@@ -92,5 +92,21 @@ namespace Vostok.Configuration.Sources.ClusterConfig.Tests.Converters
 
             splitter.Convert(node).Should().Be(expectedResult);
         }
+
+        [Test]
+        public void Should_not_merge_object_nodes_with_null_names()
+        {
+            var node = Array(
+                Value("a.b", "1"),
+                Object(null as string, Value("x1", "y1")),
+                Object(null as string, Value("x2", "y2")));
+
+            var expectedResult = Array(
+                Object("a", Value("b", "1")),
+                Object(null as string, Value("x1", "y1")),
+                Object(null as string, Value("x2", "y2")));
+
+            splitter.Convert(node).Should().Be(expectedResult);
+        }
     }
 }
