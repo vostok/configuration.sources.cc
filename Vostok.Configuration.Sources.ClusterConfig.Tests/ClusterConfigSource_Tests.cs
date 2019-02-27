@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using FluentAssertions;
@@ -38,7 +39,7 @@ namespace Vostok.Configuration.Sources.ClusterConfig.Tests
         [Test]
         public void Should_leave_node_from_client_unchanged_when_no_converters()
         {
-            source = new ClusterConfigSource(client, Prefix);
+            source = new ClusterConfigSource(client, Prefix, new List<ISettingsNodeConverter>());
             
             var node = Substitute.For<ISettingsNode>();
             client.Observe(Prefix).Returns(Observable.Return(node));
