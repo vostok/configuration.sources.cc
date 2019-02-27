@@ -9,15 +9,15 @@ notests *default:
     - Vostok.Configuration.Sources.ClusterConfig/bin/Release/netstandard2.0/Vostok.Configuration.Sources.ClusterConfig.dll
 
   deps:
-    - vostok.configuration.sources
-    - vostok.configuration.abstractions
-    - vostok.clusterconfig.client
-    - vostok.clusterconfig.client.abstractions
     - vostok.devtools
+    - vostok.configuration.abstractions
+    - vostok.configuration.sources
+    - vostok.clusterconfig.client.abstractions
 
 full-build > notests:
   deps:
     - vostok.commons.testing
+  
   build:
     target: Vostok.Configuration.Sources.ClusterConfig.sln
     configuration: Release
