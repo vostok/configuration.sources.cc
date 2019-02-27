@@ -12,6 +12,9 @@ namespace Vostok.Configuration.Sources.ClusterConfig.Converters
         // TODO(krait): Optimize!
         public ISettingsNode Convert(ISettingsNode node)
         {
+            if (node == null)
+                return null;
+
             var keys = node.Name == null
                 ? new string[]{null}
                 : node.Name.Replace(" ", "").Split(new [] {Separator}, StringSplitOptions.RemoveEmptyEntries);
