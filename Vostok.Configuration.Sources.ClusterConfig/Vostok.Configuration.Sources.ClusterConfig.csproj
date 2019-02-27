@@ -2,36 +2,44 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\..\vostok.devtools\library-common-props\Main-Project.props" />
   <Import Project="..\..\vostok.devtools\git-commit-to-assembly-title\Vostok.Tools.GitCommit2AssemblyTitle.props" />
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Configurations>Debug;Release</Configurations>
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
+
   <PropertyGroup>
     <VersionPrefix>0.0.1</VersionPrefix>
   </PropertyGroup>
+
   <PropertyGroup>
     <Title>Vostok.Configuration.Sources.ClusterConfig</Title>
-    <Description>Vostok.Configuration.Sources.ClusterConfig</Description>
+    <Description>Configuration source based on ClusterConfig client.</Description>
   </PropertyGroup>
+
   <PropertyGroup>
     <PackageProjectUrl>https://github.com/vostok/configuration.sources.cc</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/vostok/configuration.sources.cc/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageTags>vostok</PackageTags>
+    <PackageTags>vostok vostok.configuration vostok.clusterconfig</PackageTags>
     <RepositoryUrl>https://github.com/vostok/configuration.sources.cc</RepositoryUrl>
   </PropertyGroup>
+
   <ItemGroup>
     <Reference Include="Vostok.ClusterConfig.Client.Abstractions">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\vostok.clusterconfig.client.abstractions\Vostok.ClusterConfig.Client.Abstractions\bin\Release\netstandard2.0\Vostok.ClusterConfig.Client.Abstractions.dll</HintPath>
     </Reference>
+    
     <Reference Include="Vostok.Configuration.Abstractions">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\vostok.configuration.abstractions\Vostok.Configuration.Abstractions\bin\Release\netstandard2.0\Vostok.Configuration.Abstractions.dll</HintPath>
     </Reference>
+
     <Reference Include="Vostok.Configuration.Sources">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\vostok.configuration.sources\Vostok.Configuration.Sources\bin\Release\netstandard2.0\Vostok.Configuration.Sources.dll</HintPath>
     </Reference>
   </ItemGroup>
+
 </Project>
