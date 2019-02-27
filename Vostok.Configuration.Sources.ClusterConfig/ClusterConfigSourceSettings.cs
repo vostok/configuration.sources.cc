@@ -1,5 +1,6 @@
 ﻿using System;
 using JetBrains.Annotations;
+using Vostok.ClusterConfig.Client.Abstractions;
 using Vostok.Configuration.Abstractions.SettingsTree;
 
 namespace Vostok.Configuration.Sources.ClusterConfig
@@ -7,10 +8,14 @@ namespace Vostok.Configuration.Sources.ClusterConfig
     [PublicAPI]
     public class ClusterConfigSourceSettings
     {
-        public ClusterConfigSourceSettings(string prefix)
+        public ClusterConfigSourceSettings([NotNull] IClusterConfigClient client, [NotNull] string prefix)
         {
-            Prefix = prefix;
+            Client = client ?? throw new ArgumentNullException(nameof(client));
+            Prefix = prefix ?? throw new ArgumentNullException(nameof(prefix));
         }
+
+        [NotNull]
+        public IClusterConfigClient Client { get; }
 
         [NotNull]
         public string Prefix { get; }

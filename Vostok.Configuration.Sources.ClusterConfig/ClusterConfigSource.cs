@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Linq;
 using JetBrains.Annotations;
-using Vostok.ClusterConfig.Client;
 using Vostok.ClusterConfig.Client.Abstractions;
 using Vostok.Configuration.Abstractions;
-using Vostok.Configuration.Abstractions.Attributes;
 using Vostok.Configuration.Abstractions.SettingsTree;
 using Vostok.Configuration.Sources.ClusterConfig.Converters;
 using Vostok.Configuration.Sources.Extensions.Observable;
@@ -12,7 +10,7 @@ using Vostok.Configuration.Sources.Extensions.Observable;
 namespace Vostok.Configuration.Sources.ClusterConfig
 {
     /// <summary>
-    /// A source that loads settings from Cluster Config.
+    /// A source that loads settings from ClusterConfig.
     /// </summary>
     [PublicAPI]
     public class ClusterConfigSource : IConfigurationSource
@@ -26,7 +24,7 @@ namespace Vostok.Configuration.Sources.ClusterConfig
 
         public ClusterConfigSource(ClusterConfigSourceSettings settings)
             :this(
-                ClusterConfigClient.Default,
+                settings.Client,
                 settings.Prefix,
                 new ISettingsNodeConverter[]
                 {
