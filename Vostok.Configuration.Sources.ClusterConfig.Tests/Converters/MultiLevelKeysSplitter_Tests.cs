@@ -52,20 +52,6 @@ namespace Vostok.Configuration.Sources.ClusterConfig.Tests.Converters
         }
 
         [Test]
-        public void Should_create_tree_when_ArrayNode_has_separators_in_name()
-        {
-            var node = Array("a.b.c", "value1", "value2");
-            converter.Convert(node).Should().Be(Object("a", Object("b", Array("c", "value1", "value2"))));
-        }
-
-        [Test]
-        public void Should_create_tree_when_ObjectNode_has_separators_in_name()
-        {
-            var node = Object("a.b.c", ("key1", "value1"), ("key2", "value2"));
-            converter.Convert(node).Should().Be(Object("a", Object("b", Object("c", ("key1", "value1"), ("key2", "value2")))));
-        }
-
-        [Test]
         public void Should_work_recursively()
         {
             var node = Object("a.b", Array("c.d", Value("e.f", "value")));
