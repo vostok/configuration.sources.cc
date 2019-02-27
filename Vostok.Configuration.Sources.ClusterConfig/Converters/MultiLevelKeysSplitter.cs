@@ -7,19 +7,14 @@ namespace Vostok.Configuration.Sources.ClusterConfig.Converters
 {
     internal class MultiLevelKeysSplitter : ISettingsNodeConverter
     {
-        private readonly string[] separators;
-
-        public MultiLevelKeysSplitter(params string[] separators)
-        {
-            this.separators = separators;
-        }
+        private const char Separator = '.';
 
         // TODO(krait): Optimize!
         public ISettingsNode Convert(ISettingsNode node)
         {
             var keys = node.Name == null
                 ? new string[]{null}
-                : node.Name.Replace(" ", "").Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                : node.Name.Replace(" ", "").Split(new [] {Separator}, StringSplitOptions.RemoveEmptyEntries);
             
             if (keys.Length == 0)
                 keys = new []{""};

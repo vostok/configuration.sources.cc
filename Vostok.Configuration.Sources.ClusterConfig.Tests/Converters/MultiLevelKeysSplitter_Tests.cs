@@ -14,7 +14,7 @@ namespace Vostok.Configuration.Sources.ClusterConfig.Tests.Converters
         [SetUp]
         public void SetUp()
         {
-            converter = new MultiLevelKeysSplitter(".");
+            converter = new MultiLevelKeysSplitter();
         }
         
         [TestCase(null)]

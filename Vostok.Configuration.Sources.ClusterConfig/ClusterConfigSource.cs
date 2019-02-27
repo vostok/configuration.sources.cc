@@ -15,8 +15,6 @@ namespace Vostok.Configuration.Sources.ClusterConfig
     [PublicAPI]
     public class ClusterConfigSource : IConfigurationSource
     {
-        private static readonly string[] Separators = {"."};
-
         private readonly Func<string, ISettingsNode> valueParser;
         private readonly IClusterConfigClient client;
         private readonly ISettingsNodeConverter[] converters;
@@ -27,7 +25,7 @@ namespace Vostok.Configuration.Sources.ClusterConfig
                 settings.Prefix,
                 new ISettingsNodeConverter[]
                     {
-                        settings.SplitMultiLevelKeys ? new MultiLevelKeysSplitter(Separators) : null,
+                        settings.SplitMultiLevelKeys ? new MultiLevelKeysSplitter() : null,
                         settings.ValuesParser != null ? new ValueParser(settings.ValuesParser) : null
                     }.Where(converter => converter != null)
                     .ToArray())
