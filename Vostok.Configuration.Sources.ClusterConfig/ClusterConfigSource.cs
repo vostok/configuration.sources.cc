@@ -16,31 +16,36 @@ namespace Vostok.Configuration.Sources.ClusterConfig
     public class ClusterConfigSource : IConfigurationSource
     {
         private static readonly string[] Separators = {"."};
-        
-        private readonly Func<string, ISettingsNode> parseSettings;
+
+        private readonly Func<string, ISettingsNode> valueParser;
         private readonly IClusterConfigClient client;
         private readonly ISettingsNodeConverter[] converters;
         private readonly string prefix;
 
-        public ClusterConfigSource(ClusterConfigSourceSettings settings)
-            :this(
+        public ClusterConfigSource([NotNull] ClusterConfigSourceSettings settings)
+            : this(
                 settings.Client,
                 settings.Prefix,
                 new ISettingsNodeConverter[]
-                {
-                    settings.SplitMultiLevelKeys ? new MultiLevelKeysSplitter(Separators) : null,
-                    settings.ValuesParser != null ? new ValueParser(settings.ValuesParser) : null
-                }.Where(converter => converter != null).ToArray())
+                    {
+                        settings.SplitMultiLevelKeys ? new MultiLevelKeysSplitter(Separators) : null,
+                        settings.ValuesParser != null ? new ValueParser(settings.ValuesParser) : null
+                    }.Where(converter => converter != null)
+                    .ToArray())
         {
         }
-        
-        internal ClusterConfigSource(IClusterConfigClient client, string prefix, params ISettingsNodeConverter[] converters)
+
+        internal ClusterConfigSource(
+            [NotNull] IClusterConfigClient client, 
+            [NotNull] string prefix, 
+            [NotNull] params ISettingsNodeConverter[] converters)
         {
             this.client = client;
-            this.prefix = prefix ?? "";
+            this.prefix = prefix;
             this.converters = converters;
         }
 
+        /// <inheritdoc />
         public IObservable<(ISettingsNode settings, Exception error)> Observe() =>
             client
                 .Observe(prefix)
