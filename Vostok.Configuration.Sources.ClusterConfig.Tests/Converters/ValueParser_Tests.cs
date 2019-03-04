@@ -17,7 +17,7 @@ namespace Vostok.Configuration.Sources.ClusterConfig.Tests.Converters
         [SetUp]
         public void SetUp()
         {
-            parser = (value, name) => Object(name, Value(null, "parsed"));
+            parser = (value, name) => Object(name, Value("xx", "parsed"));
 
             converter = new ValueParser(parser);
         }
@@ -29,7 +29,7 @@ namespace Vostok.Configuration.Sources.ClusterConfig.Tests.Converters
 
             var parsed = converter.Convert(original);
 
-            var expected = Object("name", Value(null, "parsed"));
+            var expected = Object("name", Value("xx", "parsed"));
 
             parsed.Should().Be(expected);
         }
@@ -41,7 +41,7 @@ namespace Vostok.Configuration.Sources.ClusterConfig.Tests.Converters
 
             var parsed = converter.Convert(original);
 
-            var expected = Object("x", Value(null, "parsed"));
+            var expected = Object("x", Value("xx", "parsed"));
 
             parsed.Should().Be(expected);
         }
@@ -53,7 +53,7 @@ namespace Vostok.Configuration.Sources.ClusterConfig.Tests.Converters
 
             var parsed = converter.Convert(original);
 
-            var expected = Array(Object("x", Value(null, "parsed")));
+            var expected = Array(Object("x", Value("xx", "parsed")));
 
             parsed.Should().Be(expected);
         }
@@ -65,7 +65,7 @@ namespace Vostok.Configuration.Sources.ClusterConfig.Tests.Converters
 
             var parsed = converter.Convert(original);
 
-            var expected = Object(Object("x", Value(null, "parsed")));
+            var expected = Object(Object("x", Value("xx", "parsed")));
 
             parsed.Should().Be(expected);
         }
