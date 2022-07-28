@@ -1,0 +1,22 @@
+Vostok.Configuration.Sources.ClusterConfig.ClusterConfigSource
+Vostok.Configuration.Sources.ClusterConfig.ClusterConfigSource.ClusterConfigSource(Vostok.Configuration.Sources.ClusterConfig.ClusterConfigSourceSettings settings) -> void
+Vostok.Configuration.Sources.ClusterConfig.ClusterConfigSource.Observe() -> System.IObservable<(Vostok.Configuration.Abstractions.SettingsTree.ISettingsNode settings, System.Exception error)>
+Vostok.Configuration.Sources.ClusterConfig.ClusterConfigSource.Prefix.get -> string
+Vostok.Configuration.Sources.ClusterConfig.ClusterConfigSource.ScopeTo(string path) -> Vostok.Configuration.Abstractions.IConfigurationSource
+Vostok.Configuration.Sources.ClusterConfig.ClusterConfigSourceSettings
+Vostok.Configuration.Sources.ClusterConfig.ClusterConfigSourceSettings.Client.get -> Vostok.ClusterConfig.Client.Abstractions.IClusterConfigClient
+Vostok.Configuration.Sources.ClusterConfig.ClusterConfigSourceSettings.ClusterConfigSourceSettings(Vostok.ClusterConfig.Client.Abstractions.IClusterConfigClient client, string prefix) -> void
+Vostok.Configuration.Sources.ClusterConfig.ClusterConfigSourceSettings.ConditionalValuesParsers.get -> System.Collections.Generic.IList<(Vostok.Configuration.Sources.ClusterConfig.ValueNodeParser, Vostok.Configuration.Sources.ClusterConfig.ValueNodeCondition)>
+Vostok.Configuration.Sources.ClusterConfig.ClusterConfigSourceSettings.ConditionalValuesParsers.set -> void
+Vostok.Configuration.Sources.ClusterConfig.ClusterConfigSourceSettings.CustomConverters.get -> System.Collections.Generic.IList<Vostok.Configuration.Sources.ClusterConfig.Converters.ISettingsNodeConverter>
+Vostok.Configuration.Sources.ClusterConfig.ClusterConfigSourceSettings.CustomConverters.set -> void
+Vostok.Configuration.Sources.ClusterConfig.ClusterConfigSourceSettings.Prefix.get -> string
+Vostok.Configuration.Sources.ClusterConfig.ClusterConfigSourceSettings.SplitMultiLevelKeys.get -> bool
+Vostok.Configuration.Sources.ClusterConfig.ClusterConfigSourceSettings.SplitMultiLevelKeys.set -> void
+Vostok.Configuration.Sources.ClusterConfig.ClusterConfigSourceSettings.ValuesParser.get -> Vostok.Configuration.Sources.ClusterConfig.ValueNodeParser
+Vostok.Configuration.Sources.ClusterConfig.ClusterConfigSourceSettings.ValuesParser.set -> void
+Vostok.Configuration.Sources.ClusterConfig.Converters.ISettingsNodeConverter
+Vostok.Configuration.Sources.ClusterConfig.Converters.ISettingsNodeConverter.Convert(Vostok.Configuration.Abstractions.SettingsTree.ISettingsNode settings) -> Vostok.Configuration.Abstractions.SettingsTree.ISettingsNode
+Vostok.Configuration.Sources.ClusterConfig.Converters.ISettingsNodeConverter.NeedToConvert(Vostok.Configuration.Abstractions.SettingsTree.ISettingsNode settings) -> bool
+Vostok.Configuration.Sources.ClusterConfig.ValueNodeCondition
+Vostok.Configuration.Sources.ClusterConfig.ValueNodeParser
